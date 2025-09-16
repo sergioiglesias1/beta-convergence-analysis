@@ -1,7 +1,7 @@
 # Beta-Convergence Analysis of Country Growth with Python
 
 ## Overview
-This project analyzes β-convergence in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially "catching up" over time.
+This project analyzes β-convergence in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially "catching up" over time. To see the whole process and output generated please click this link here: https://sergioiglesias1.github.io/myportfolio/project.html
 
 ## What is β-Convergence and Why is it Important?
 β-Convergence is an economic concept that examines whether economies with lower initial growth rates tend to grow faster than those with higher initial rates. In this analysis, we regress GDP per capita growth rates in later periods against earlier periods:
