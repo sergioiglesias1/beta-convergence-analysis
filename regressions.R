@@ -18,10 +18,9 @@ summary(sreg2)
 sreg3 <- lm(Recuperation_Growth..2009.2013._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
 summary(sreg3)
 
-### Multiple Regression with Dummy & VIF
-multimodel <- lm(Recuperation_Growth..2009.2013._y ~ 
-                    developed +
-                    Pre_Crisis_Growth..2004.2008._y,
-                  data = wdi)
+### Generalized Linear Model & VIF with dummy
+multimodel <- glm(developed ~ Pre_Crisis_Growth..2004.2008._y + 
+                     Recuperation_Growth..2009.2013._y,
+                   data=wdi)
 summary(multimodel)
 car::vif(multimodel)
