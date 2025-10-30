@@ -1,3 +1,5 @@
+library(car)
+
 wdi <- read.csv("data/clean_wdi.csv", sep=",", dec=".")
 wdi
 
