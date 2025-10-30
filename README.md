@@ -2,6 +2,7 @@
 
 ## Overview
 This project analyzes β-convergence in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones.
+**There is an important detail here, which is that the data is not scaled since we are working with the same types of data (GDP per capita)**.
 
 ## What is β-Convergence and Why is it Important?
 β-Convergence is an economic concept that examines whether economies with lower initial growth rates tend to grow faster than those with higher initial rates. In this analysis, we regress GDP per capita growth rates in later periods against earlier periods:
@@ -20,6 +21,8 @@ The dataset contains GDP per capita growth data from World Development Indicator
   - Recuperation (2009-2013)
   - Stability (2014-2018)
   - Recent (2019-2024)
+    
+This repository has the data already in a csv, to access the official website feel free to investigate through this link: https://databank.worldbank.org/reports.aspx?source=2&series=NY.GDP.PCAP.KD.ZG&country=#
 
 ## Analytical Framework
 
