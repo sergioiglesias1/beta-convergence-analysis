@@ -140,7 +140,7 @@ car::vif(multimodel)
 * **Independent Variables**:
   * `PreCrisisGrowthᵢ`: Average GDP growth (2004-2008)
   * `RecuperationGrowthᵢ`: Average GDP growth (2009-2013)
-* **Error Term**: `uᵢ`, `∀` `𝔼[uᵢ] = 0`
+* **Error Term**: `uᵢ`, `∀` `𝔼[uᵢ|Xᵢ] = 0`
 
 ### Multicollinearity Assessment
 
