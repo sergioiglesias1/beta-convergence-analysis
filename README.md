@@ -40,6 +40,24 @@ World Development Indicators (WDI) - 2004-2024
   * **Stability** (2014-2018)
   * **Recent** (2019-2024)
 
+## File Structure
+
+```
+.
+├── data/
+│   ├── clean_wdi.csv        # Original data
+│   └── wdi_data.csv         # Clean and processed data
+├── outputs/
+│   ├── R_outputs/           # Plots in python
+│   └── python_outputs/      # Regressions in R
+├── .gitignore
+├── LICENSE
+├── README.md
+├── main.ipynb               # Main training
+├── regressions.R
+└── requirements.txt
+```
+
 ## Methodology
 
 ### Analytical Tools
@@ -59,14 +77,14 @@ from sklearn.linear_model import LinearRegression
 library(car)
 ```
 
-### Data Processing Pipeline
+### Data Processing
 
 1. Import and clean WDI dataset
 2. Calculate average growth rates for each period
 3. Classify countries into Emerging/Developed groups
 4. Remove empty rows and standardize column names
 
-## Visualization Framework
+## Visualizations
 
 ### 1. Correlation Matrix Heatmap
 
