@@ -1,43 +1,51 @@
 # Beta-Convergence Analysis of Country Growth with Python and R
 
 ## Overview
-This project analyzes β-convergence in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones.
-**There is an important detail here, which is that the data is not scaled since we are working with the same types of data (GDP per capita)**.
 
-## What is β-Convergence and Why is it Important?
-β-Convergence is an economic concept that examines whether economies with lower initial growth rates tend to grow faster than those with higher initial rates. In this analysis, we regress GDP per capita growth rates in later periods against earlier periods:
+This project analyzes **β-convergence** in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially reducing income disparities over time.
 
-- **β < 0**: Indicates convergence (poorer economies growing faster)
-- **β > 0**: Indicates divergence (richer economies continuing to grow faster)
+> **Note:** The data is not scaled as we are working with homogeneous GDP per capita growth rates.
 
-This analysis helps policymakers assess whether economic disparities between countries are narrowing over time and how global events are affecting growth patterns.
+## Theoretical Framework
+
+### What is β-Convergence?
+
+β-Convergence is an economic concept that tests whether economies with lower initial income levels tend to grow faster than their richer counterparts. In this analysis, we examine growth rate patterns across different economic periods by regressing later period growth rates against earlier periods.
+
+#### Interpretation of β Coefficients:
+
+* **β < 0**: Indicates convergence (poorer economies growing faster)
+* **β > 0**: Indicates divergence (richer economies maintaining growth advantage)
+
+#### Policy Relevance:
+
+This analysis helps policymakers assess whether economic disparities between countries are narrowing over time and understand how global events influence growth patterns.
 
 ## Dataset Description
-The dataset contains GDP per capita growth data from World Development Indicators (WDI) between 2004-2024:
-- **Country Code**: Unique identifier for each country (e.g., USA, CHL, IND)
-- **Group**: Classification as 'Emerging' or 'Developed'
-- **Period Growth Rates**: Calculated for four time periods:
-  - Pre-Crisis (2004-2008)
-  - Recuperation (2009-2013)
-  - Stability (2014-2018)
-  - Recent (2019-2024)
-    
-This repository has the data already in a csv, to access the official website feel free to investigate through this link: https://databank.worldbank.org/reports.aspx?source=2&series=NY.GDP.PCAP.KD.ZG&country=#
 
-## Analytical Framework
+### Source
 
-### Python Components
-- Data preprocessing and cleaning
-- Correlation matrix visualization (Seaborn)
-- Beta-convergence plots with regression lines (Matplotlib)
-- Initial coefficient calculations
+World Development Indicators (WDI) - 2004-2024
 
-### R Components  
-- Multicollinearity detection via VIF analysis
-- Statistical significance testing of β coefficients
-- Comprehensive regression diagnostics
+[Official Data Source](https://databank.worldbank.org/reports.aspx?source=2&series=NY.GDP.PCAP.KD.ZG&country=#)
 
-### Libraries Used
+### Structure
+
+* **Country Code**: Unique identifier (e.g., USA, CHL, IND)
+* **Group**: Economic classification ('Emerging' or 'Developed')
+* **Period Growth Rates**:
+
+  * **Pre-Crisis** (2004-2008)
+  * **Recuperation** (2009-2013)
+  * **Stability** (2014-2018)
+  * **Recent** (2019-2024)
+
+## Methodology
+
+### Analytical Tools
+
+#### Python Libraries:
+
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -45,38 +53,115 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 ```
 
+#### R Libraries:
+
 ```r
 library(car)
 ```
 
-## Data Processing
-- Import and clean WDI dataset
-- Calculate average growth rates for each period
-- Classify countries into Emerging and Developed groups
-- Remove empty rows and clean column names
+### Data Processing Pipeline
 
-## Visualization Structure
+1. Import and clean WDI dataset
+2. Calculate average growth rates for each period
+3. Classify countries into Emerging/Developed groups
+4. Remove empty rows and standardize column names
 
-The project includes a comprehensive visualization approach:
+## Visualization Framework
 
-### Correlation Matrix Heatmap (Python/Seaborn)
-- First visualization showing relationships between growth periods
-- Provides overview of inter-period correlations
+### 1. Correlation Matrix Heatmap
 
-### Three Main Beta-Convergence Plots (Python/Matplotlib)
-- **Stability (2014-2018) vs. Recuperation (2009-2013)**
-- **Recent (2019-2024) vs. Pre-Crisis (2004-2008)**
-- **Recuperation (2009-2013) vs. Pre-Crisis (2004-2008)**
-- Each plot displays regression lines and the β coefficients
+* **Tool**: Python/Seaborn
+* **Purpose**: Explore relationships between growth periods
+* **Output**: Inter-period correlation overview
 
-## Output findings
+### 2. Beta-Convergence Analysis Plots
+
+**Tool**: Python/Matplotlib
+
+**Three Key Comparisons**:
+
+1. **Stability (2014-2018)** vs. **Recuperation (2009-2013)**
+2. **Recent (2019-2024)** vs. **Pre-Crisis (2004-2008)**
+3. **Recuperation (2009-2013)** vs. **Pre-Crisis (2004-2008)**
+
+*Each visualization includes regression lines and β coefficients*
+
+## Regression Analysis
+
+### Single-Variable Models
+
+#### Regression 1: Stability vs. Recuperation
+
+```r
+sreg1 <- lm(Stability_Growth..2014.2018._y ~ Recuperation_Growth..2009.2013._y, data=wdi)
+summary(sreg1)
+```
+
+#### Regression 2: Recent vs. Pre-Crisis
+
+```r
+sreg2 <- lm(Recent_Growth..2019.2024._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
+summary(sreg2)
+```
+
+#### Regression 3: Recuperation vs. Pre-Crisis
+
+```r
+sreg3 <- lm(Recuperation_Growth..2009.2013._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
+summary(sreg3)
+```
+
+### Multivariate Regression Model
+
+#### Theoretical Specification
+
+The model is specified as:
+
+```math
+Developed_i = β_0 + β_1 * PreCrisisGrowth_i + β_2 * RecuperationGrowth_i + u_i
+```
+
+#### R Implementation
+
+```r
+multimodel <- glm(Developed ~ Pre_Crisis_Growth..2004.2008._y +
+                   Recuperation_Growth..2009.2013._y,
+                 data = wdi)
+summary(multimodel)
+car::vif(multimodel)
+```
+
+#### Model Parameters
+
+* **Sample**: 30 countries
+* **Dependent Variable**: `Developedᵢ ∈ {1, 0}` where:
+  - `1` = Developed economy
+  - `0` = Emerging economy
+* **Independent Variables**:
+  * `PreCrisisGrowthᵢ`: Average GDP growth (2004-2008)
+  * `RecuperationGrowthᵢ`: Average GDP growth (2009-2013)
+* **Error Term**: `uᵢ`, `∀` `𝔼[uᵢ] = 0`
+
+### Multicollinearity Assessment
+
+* **VIF Score**: 3.4757
+* **Interpretation**: Moderate correlation between predictors
+* **Conclusion**: Acceptable level, no harmful multicollinearity detected
+
+## Key Findings
 
 ### Emerging Economies
-- Show clear and growing divergence across all periods
-- Positive β coefficients (0.38, 0.23) indicate no convergence
-- Faster-growing economies continue to grow rapidly
+
+* **Pattern**: Clear and growing divergence across all periods
+* **Evidence**: Positive β coefficients (0.38, 0.23)
+* **Interpretation**: No convergence observed; faster-growing economies maintain momentum
 
 ### Developed Economies
-- Transition from weak convergence to moderate divergence
-- Slightly negative β in early periods (-0.14, -0.30) indicating mild convergence
-- Shift to positive β in recent periods suggesting emerging divergence
+
+* **Early Periods**: Weak convergence (β = -0.14, -0.30)
+* **Recent Periods**: Shift toward divergence (positive β)
+* **Trend**: Transition from mild convergence to emerging divergence
+
+## Conclusion
+
+The analysis reveals distinct growth patterns between emerging and developed economies, with emerging markets showing persistent divergence while developed economies transition from weak convergence to divergence in recent years. These findings provide valuable insights for economic policy formulation and international development strategies.
