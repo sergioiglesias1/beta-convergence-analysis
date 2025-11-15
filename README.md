@@ -47,7 +47,7 @@ World Development Indicators (WDI) - 2004-2024
 ├── data/
 │   ├── clean_wdi.csv        # Original data
 │   └── wdi_data.csv         # Clean and processed data
-├── outputs/
+├── visualizations/
 │   ├── R_outputs/           # Plots in python
 │   └── python_outputs/      # Regressions in R
 ├── .gitignore
@@ -75,6 +75,7 @@ from sklearn.linear_model import LinearRegression
 
 ```r
 library(car)
+library(lmtest)
 ```
 
 ### Data Processing
@@ -113,6 +114,7 @@ library(car)
 ```r
 sreg1 <- lm(Stability_Growth..2014.2018._y ~ Recuperation_Growth..2009.2013._y, data=wdi)
 summary(sreg1)
+coeftest(sreg1, vcov = vcovHC(sreg1, type="HC1"))
 ```
 
 #### Regression 2: Recent vs. Pre-Crisis
@@ -120,6 +122,7 @@ summary(sreg1)
 ```r
 sreg2 <- lm(Recent_Growth..2019.2024._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
 summary(sreg2)
+coeftest(sreg2, vcov = vcovHC(sreg2, type="HC1"))
 ```
 
 #### Regression 3: Recuperation vs. Pre-Crisis
@@ -127,6 +130,7 @@ summary(sreg2)
 ```r
 sreg3 <- lm(Recuperation_Growth..2009.2013._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
 summary(sreg3)
+coeftest(sreg3, vcov = vcovHC(sreg3, type="HC1"))
 ```
 
 ### Multivariate Regression Model
@@ -147,6 +151,7 @@ multimodel <- glm(Developed ~ Pre_Crisis_Growth..2004.2008._y +
                  data = wdi)
 summary(multimodel)
 car::vif(multimodel)
+coeftest(multimodel, vcov = vcovHC(multimodel, type="HC1"))
 ```
 
 #### Model Parameters
@@ -162,6 +167,7 @@ car::vif(multimodel)
 
 ### Multicollinearity Assessment
 
+* All regressions now use regular and robust standard errors to correct for potential heteroscedasticity and better significance levels
 * **VIF Score**: 3.4757
 * **Interpretation**: Moderate correlation between predictors
 * **Conclusion**: Acceptable level, no harmful multicollinearity detected
@@ -179,6 +185,12 @@ car::vif(multimodel)
 * **Early Periods**: Weak convergence (β = -0.14, -0.30)
 * **Recent Periods**: Shift toward divergence (positive β)
 * **Trend**: Transition from mild convergence to emerging divergence
+
+## Limitations
+
+* **Small sample**: Only 30 countries, so statistical power is limited.  
+* **Cross-sectional data**: No panel structure; unobserved heterogeneity may bias results.  
+* **LPM limitations**: Binary dependent variable; probabilities can fall outside [0,1].  
 
 ## Conclusion
 

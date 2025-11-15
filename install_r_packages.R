@@ -1,2 +1,2 @@
 # Install required R packages for Beta-Convergence Analysis
-install.packages("car")
+install.packages(c("car", "lmtest"))
