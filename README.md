@@ -48,8 +48,8 @@ World Development Indicators (WDI) - 2004-2024
 │   ├── clean_wdi.csv        # Original data
 │   └── wdi_data.csv         # Clean and processed data
 ├── visualizations/
-│   ├── R_outputs/           # Plots in python
-│   └── python_outputs/      # Regressions in R
+│   ├── R_outputs/           # Regressions in R
+│   └── python_outputs/      # Plots in python
 ├── .gitignore
 ├── LICENSE
 ├── README.md
