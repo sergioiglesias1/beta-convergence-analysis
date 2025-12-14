@@ -45,17 +45,20 @@ World Development Indicators (WDI) - 2004-2024
 ```
 .
 ├── data/
-│   ├── clean_wdi.csv        # Original data
-│   └── wdi_data.csv         # Clean and processed data
+│   ├── clean_data.csv        
+│   └── gdp_data.csv         
 ├── visualizations/
-│   ├── R_outputs/           # Regressions in R
-│   └── python_outputs/      # Plots in python
+│   ├── R_outputs/           
+│   └── python_outputs/      
 ├── .gitignore
+├── ETL.ipynb               
+├── install_r_packages.R
 ├── LICENSE
+├── main.ipynb               
 ├── README.md
-├── main.ipynb               # Main training
 ├── regressions.R
-└── requirements.txt
+├── requirements.txt
+└── utils.py
 ```
 
 ## Methodology
@@ -74,7 +77,7 @@ from sklearn.linear_model import LinearRegression
 #### R Libraries:
 
 ```r
-library(car)
+library(sandwich)
 library(lmtest)
 ```
 
@@ -112,7 +115,7 @@ library(lmtest)
 #### Regression 1: Stability vs. Recuperation
 
 ```r
-sreg1 <- lm(Stability_Growth..2014.2018._y ~ Recuperation_Growth..2009.2013._y, data=wdi)
+sreg1 <- lm(Stability..2014.2018. ~ Recuperation..2009.2013., data=df_wdi)
 summary(sreg1)
 coeftest(sreg1, vcov = vcovHC(sreg1, type="HC1"))
 ```
@@ -120,7 +123,7 @@ coeftest(sreg1, vcov = vcovHC(sreg1, type="HC1"))
 #### Regression 2: Recent vs. Pre-Crisis
 
 ```r
-sreg2 <- lm(Recent_Growth..2019.2024._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
+sreg2 <- lm(Recent..2019.2024. ~ Pre_Crisis..2004.2008., data=df_wdi)
 summary(sreg2)
 coeftest(sreg2, vcov = vcovHC(sreg2, type="HC1"))
 ```
@@ -128,7 +131,7 @@ coeftest(sreg2, vcov = vcovHC(sreg2, type="HC1"))
 #### Regression 3: Recuperation vs. Pre-Crisis
 
 ```r
-sreg3 <- lm(Recuperation_Growth..2009.2013._y ~ Pre_Crisis_Growth..2004.2008._y, data=wdi)
+sreg3 <- lm(Recuperation..2009.2013. ~ Pre_Crisis..2004.2008., data=df_wdi)
 summary(sreg3)
 coeftest(sreg3, vcov = vcovHC(sreg3, type="HC1"))
 ```
@@ -146,17 +149,17 @@ Developed_i = β_0 + β_1 * PreCrisisGrowth_i + β_2 * RecuperationGrowth_i + u_
 #### R Implementation
 
 ```r
-multimodel <- glm(Developed ~ Pre_Crisis_Growth..2004.2008._y +
-                   Recuperation_Growth..2009.2013._y,
-                 data = wdi)
-summary(multimodel)
-car::vif(multimodel)
-coeftest(multimodel, vcov = vcovHC(multimodel, type="HC1"))
+mreg <- glm(developed ~ Pre_Crisis..2004.2008. + 
+                    Recuperation..2009.2013.,
+                  data=df_wdi)
+summary(mreg)
+car::vif(mreg)
+coeftest(mreg, vcov = vcovHC(mreg, type="HC1")) 
 ```
 
 #### Model Parameters
 
-* **Sample**: 30 countries
+* **Sample**: 58 countries
 * **Dependent Variable**: `Developedᵢ ∈ {1, 0}` where:
   - `1` = Developed economy
   - `0` = Emerging economy
@@ -168,8 +171,8 @@ coeftest(multimodel, vcov = vcovHC(multimodel, type="HC1"))
 ### Multicollinearity Assessment
 
 * All regressions now use regular and robust standard errors to correct for potential heteroscedasticity and better significance levels
-* **VIF Score**: 3.4757
-* **Interpretation**: Moderate correlation between predictors
+* **VIF Score**: 1.595
+* **Interpretation**: Low correlation between predictors
 * **Conclusion**: Acceptable level, no harmful multicollinearity detected
 
 ## Key Findings
@@ -188,9 +191,10 @@ coeftest(multimodel, vcov = vcovHC(multimodel, type="HC1"))
 
 ## Limitations
 
-* **Small sample**: Only 30 countries, so statistical power is limited.  
+* **Small sample**: Only 58 countries, so statistical power is limited.  
 * **Cross-sectional data**: No panel structure; unobserved heterogeneity may bias results.  
 * **LPM limitations**: Binary dependent variable; probabilities can fall outside [0,1].  
+* **Sigma-Convergence**: Not tested, as it requires panel data.
 
 ## Conclusion
 
