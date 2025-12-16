@@ -153,7 +153,7 @@ mreg <- glm(developed ~ Pre_Crisis..2004.2008. +
                     Recuperation..2009.2013.,
                   data=df_wdi)
 summary(mreg)
-car::vif(mreg)
+vif(mreg)
 coeftest(mreg, vcov = vcovHC(mreg, type="HC1")) 
 ```
 
