@@ -1,8 +1,10 @@
 # Beta-Convergence Analysis of Country Growth with Python and R
 
-## Overview
+![Python 3.13](https://img.shields.io/badge/Python-3.13-blue)
+![R >= 4.5.1](https://img.shields.io/badge/R-%3E%3D4.5.1-276DC3?logo=r&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=white)
 
-This project analyzes **β-convergence** in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially reducing income disparities over time.
+### This project analyzes **β-convergence** in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially reducing income disparities over time.
 
 > **Note:** The data is not scaled as we are working with homogeneous GDP per capita growth rates.
 
