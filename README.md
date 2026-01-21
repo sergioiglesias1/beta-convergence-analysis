@@ -1,28 +1,38 @@
 # Beta-Convergence Analysis of Country Growth with Python and R
 
-![Python 3.13](https://img.shields.io/badge/Python-3.13-blue)
+![Python >= 3.13](https://img.shields.io/badge/Python-%3E%3D3.13-blue?logo=python&logoColor=white)
 ![R >= 4.5.1](https://img.shields.io/badge/R-%3E%3D4.5.1-276DC3?logo=r&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=white)
 
-### This project analyzes **β-convergence** in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially reducing income disparities over time.
+This project analyzes **β-convergence** in economic growth between emerging and developed countries using GDP per capita data from 2004 to 2024. β-convergence examines whether poorer economies tend to grow faster than richer ones, potentially reducing income disparities over time.
 
-> **Note:** The data is not scaled as we are working with homogeneous GDP per capita growth rates.
+---
 
-## Theoretical Framework
+## Project Overview
 
-### What is β-Convergence?
+β-convergence is estimated using **cross-sectional regressions** of average GDP per capita growth rates across four periods:
 
-β-Convergence is an economic concept that tests whether economies with lower initial income levels tend to grow faster than their richer counterparts. In this analysis, we examine growth rate patterns across different economic periods by regressing later period growth rates against earlier periods.
+- Pre-Crisis (2004–2008)  
+- Recuperation (2009–2013)  
+- Stability (2014–2018)  
+- Recent (2019–2024)
+
+The workflow combines Python for visualization and data handling with R for econometric inference.
 
 #### Interpretation of β Coefficients:
 
-* **β < 0**: Indicates convergence (poorer economies growing faster)
-* **β > 0**: Indicates divergence (richer economies maintaining growth advantage)
+* **β < 0**: Indicates convergence <=> Poorer economies growing faster
+* **β > 0**: Indicates divergence <=> Richer economies maintaining growth advantage
 
-#### Policy Relevance:
+## Methodology
 
-This analysis helps policymakers assess whether economic disparities between countries are narrowing over time and understand how global events influence growth patterns.
-
+- **Data source**: World Development Indicators (WDI)  
+- **Sample**: 58 countries (Emerging vs Developed)  
+- **Approach**:
+  - Period-average GDP per capita growth
+  - OLS β-convergence regressions
+  - Robust standard errors (HC1)
+  - Linear Probability Model for development status
 ## Dataset Description
 
 ### Source
@@ -104,9 +114,9 @@ library(lmtest)
 
 **Three Key Comparisons**:
 
-1. **Stability (2014-2018)** vs. **Recuperation (2009-2013)**
-2. **Recent (2019-2024)** vs. **Pre-Crisis (2004-2008)**
-3. **Recuperation (2009-2013)** vs. **Pre-Crisis (2004-2008)**
+1. Stability (2014-2018) vs. Recuperation (2009-2013)
+2. Recent (2019-2024) vs. Pre-Crisis (2004-2008)
+3. Recuperation (2009-2013) vs. Pre-Crisis (2004-2008)
 
 *Each visualization includes regression lines and β coefficients*
 
@@ -170,34 +180,28 @@ coeftest(mreg, vcov = vcovHC(mreg, type="HC1"))
   * `RecuperationGrowthᵢ`: Average GDP growth (2009-2013)
 * **Error Term**: `uᵢ`, `∀` `𝔼[uᵢ|Xᵢ] = 0`
 
-### Multicollinearity Assessment
-
-* All regressions now use regular and robust standard errors to correct for potential heteroscedasticity and better significance levels
-* **VIF Score**: 1.595
-* **Interpretation**: Low correlation between predictors
-* **Conclusion**: Acceptable level, no harmful multicollinearity detected
+---
 
 ## Key Findings
 
 ### Emerging Economies
-
-* **Pattern**: Clear and growing divergence across all periods
-* **Evidence**: Positive β coefficients (0.38, 0.23)
-* **Interpretation**: No convergence observed; faster-growing economies maintain momentum
+- Persistent **divergence**
+- Positive β coefficients across all periods
+- Faster-growing economies maintain their advantage
 
 ### Developed Economies
+- Weak convergence in early periods
+- Shift toward divergence in recent years
+- No evidence of long-run income equalization
 
-* **Early Periods**: Weak convergence (β = -0.14, -0.30)
-* **Recent Periods**: Shift toward divergence (positive β)
-* **Trend**: Transition from mild convergence to emerging divergence
+---
 
 ## Limitations
 
-* **Small sample**: Only 58 countries, so statistical power is limited.  
-* **Cross-sectional data**: No panel structure; unobserved heterogeneity may bias results.  
-* **LPM limitations**: Binary dependent variable; probabilities can fall outside [0,1].  
-* **Sigma-Convergence**: Not tested, as it requires panel data.
+- Small cross-sectional sample (58 countries)
+- No panel structure → potential omitted heterogeneity
+- Linear Probability Model constraints
+- σ-convergence not tested
 
 ## Conclusion
-
 The analysis reveals distinct growth patterns between emerging and developed economies, with emerging markets showing persistent divergence while developed economies transition from weak convergence to divergence in recent years. These findings provide valuable insights for economic policy formulation and international development strategies.
