@@ -118,7 +118,11 @@ library(lmtest)
 2. Recent (2019-2024) vs. Pre-Crisis (2004-2008)
 3. Recuperation (2009-2013) vs. Pre-Crisis (2004-2008)
 
-*Each visualization includes regression lines and β coefficients*
+Example of the output plot, illustrating Stability vs. Recuperation periods’ GDP growth:
+
+![Recent-vs-PreCrisis](visualizations/python_outputs/stability_vs_recuperation.png)
+
+> Each visualization includes regression lines and β coefficients
 
 ## Regression Analysis
 
