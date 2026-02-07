@@ -1,15 +1,13 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-# Function with group & beta-coeficient
 def plot_beta_convergence(
-    data: pd.DataFrame, 
-    x_col: str, 
-    y_col: str, 
-    x_label: str, 
-    y_label: str, 
-    title: str
+    data, 
+    x_col, 
+    y_col, 
+    x_label, 
+    y_label, 
+    title
 ):
 
     plt.figure(figsize=(10, 6))
@@ -21,7 +19,9 @@ def plot_beta_convergence(
         X = sett[[x_col]]
         y = sett[y_col]
 
-        model = LinearRegression(fit_intercept=True).fit(X, y)
+        model = LinearRegression(
+            fit_intercept=True,
+        ).fit(X, y)
 
         plt.scatter(X, y, label=f'{group} data', color=colors[group], alpha=0.5)
         plt.plot(X, model.predict(X), linestyle='-', color=colors[group], 

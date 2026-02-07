@@ -66,11 +66,11 @@ World Development Indicators (WDI) - 2004-2024
 ├── ETL.ipynb               
 ├── install_r_packages.R
 ├── LICENSE
-├── main.ipynb               
+├── main.py               
+├── plots.py
 ├── README.md
 ├── regressions.R
-├── requirements.txt
-└── utils.py
+└── requirements.txt
 ```
 
 ## Methodology
@@ -195,13 +195,6 @@ coeftest(mreg, vcov = vcovHC(mreg, type="HC1"))
 - No evidence of long-run income equalization
 
 ---
-
-## Limitations
-
-- Small cross-sectional sample (58 countries)
-- No panel structure → potential omitted heterogeneity
-- Linear Probability Model constraints
-- σ-convergence not tested
 
 ## Conclusion
 The analysis reveals distinct growth patterns between emerging and developed economies, with emerging markets showing persistent divergence while developed economies transition from weak convergence to divergence in recent years. These findings provide valuable insights for economic policy formulation and international development strategies.
