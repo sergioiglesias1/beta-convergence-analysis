@@ -1,7 +1,9 @@
+rm(list=ls())
+
 library(sandwich)
 library(lmtest)
 
-df_wdi <- read.csv("C:/Users/Usuario/Downloads/beta-convergence-analysis/data/clean_data.csv", sep=",", dec=".")
+df_wdi <- read.csv("data/clean_data.csv", sep=",", dec=".")
 
 df_wdi$developed <- ifelse(df_wdi$Group == "Developed", 1, 0)
 df_wdi # with dummy variable
@@ -16,12 +18,10 @@ sreg2 <- lm(Recent..2019.2024. ~ Pre_Crisis..2004.2008., data=df_wdi)
 summary(sreg2)
 coeftest(sreg2, vcov = vcovHC(sreg2, type="HC1"))
 
-
 # Regression nº3
 sreg3 <- lm(Recuperation..2009.2013. ~ Pre_Crisis..2004.2008., data=df_wdi)
 summary(sreg3)
 coeftest(sreg3, vcov = vcovHC(sreg3, type="HC1"))
-
 
 ### Generalized Linear Model, VIF and robust stderr
 mreg <- glm(developed ~ Pre_Crisis..2004.2008. + 
