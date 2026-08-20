@@ -1,0 +1,479 @@
+
+==============================================================================
+PERIOD: Pre-Crisis (2004-2008)  (T = 4 years)
+==============================================================================
+
+-- Unconditional: growth ~ log(y0) -------------------------------
+
+Call:
+lm(formula = growth ~ log_y0, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-13.4036  -1.7573  -0.3572   1.8186  16.5250 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   6.4491     1.4606   4.415 1.91e-05 ***
+log_y0       -0.3341     0.1732  -1.929   0.0556 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.218 on 151 degrees of freedom
+Multiple R-squared:  0.02404,	Adjusted R-squared:  0.01758 
+F-statistic:  3.72 on 1 and 151 DF,  p-value: 0.05565
+
+
+HC1 robust standard errors:
+
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  6.44910    1.33416  4.8338 3.265e-06 ***
+log_y0      -0.33406    0.14813 -2.2551   0.02556 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+beta = -0.3341 (HC1 se = 0.1481) | lambda = 0.34%/yr | half-life = 206 yrs
+
+-- Conditional: growth ~ log(y0) + developed ---------------------
+
+t test of coefficients:
+
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  5.93598    2.04004  2.9097 0.004168 **
+log_y0      -0.26083    0.26830 -0.9722 0.332531   
+developed   -0.28930    0.90429 -0.3199 0.749472   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+Variance inflation factors:
+   log_y0 developed 
+ 2.914182  2.914182 
+
+-- Convergence clubs: growth ~ log(y0) * developed ---------------
+
+t test of coefficients:
+
+                 Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)       0.37357    2.23531  0.1671    0.8675    
+log_y0            0.48579    0.29571  1.6428    0.1025    
+developed        32.26259    3.99654  8.0726 2.128e-13 ***
+log_y0:developed -3.43346    0.44297 -7.7509 1.313e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+-- Diagnostics ---------------------------------------------------
+
+	studentized Breusch-Pagan test
+
+data:  uncond
+BP = 1.507, df = 1, p-value = 0.2196
+
+
+RESET test for functional form:
+
+	RESET test
+
+data:  uncond
+RESET = 10.634, df1 = 2, df2 = 149, p-value = 4.818e-05
+
+
+Cook's distance (threshold 4/n = 0.0261), 5 most influential:
+              country cooks_d
+           Azerbaijan  0.1036
+             Zimbabwe  0.0973
+ United Arab Emirates  0.0575
+              Myanmar  0.0418
+                 Togo  0.0366
+beta excluding 6 influential observations: -0.3352 (full sample: -0.3341)
+
+==============================================================================
+PERIOD: Recuperation (2008-2013)  (T = 5 years)
+==============================================================================
+
+-- Unconditional: growth ~ log(y0) -------------------------------
+
+Call:
+lm(formula = growth ~ log_y0, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.6391 -1.2753  0.1639  1.2020  7.5192 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   8.4108     1.1194   7.514 4.70e-12 ***
+log_y0       -0.7892     0.1305  -6.046 1.12e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.401 on 151 degrees of freedom
+Multiple R-squared:  0.1949,	Adjusted R-squared:  0.1896 
+F-statistic: 36.55 on 1 and 151 DF,  p-value: 1.115e-08
+
+
+HC1 robust standard errors:
+
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  8.41084    1.22671  6.8564 1.691e-10 ***
+log_y0      -0.78924    0.13842 -5.7018 6.049e-08 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+beta = -0.7892 (HC1 se = 0.1384) | lambda = 0.81%/yr | half-life = 86 yrs
+
+-- Conditional: growth ~ log(y0) + developed ---------------------
+
+t test of coefficients:
+
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  6.88814    2.03944  3.3775 0.000932 ***
+log_y0      -0.57657    0.26221 -2.1989 0.029419 *  
+developed   -0.83644    0.75624 -1.1061 0.270473    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+Variance inflation factors:
+   log_y0 developed 
+  2.85694   2.85694 
+
+-- Convergence clubs: growth ~ log(y0) * developed ---------------
+
+t test of coefficients:
+
+                 Estimate Std. Error t value Pr(>|t|)   
+(Intercept)       6.70336    2.37768  2.8193 0.005468 **
+log_y0           -0.55229    0.30691 -1.7995 0.073965 . 
+developed         0.54463    4.71439  0.1155 0.908185   
+log_y0:developed -0.14196    0.50140 -0.2831 0.777480   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+-- Diagnostics ---------------------------------------------------
+
+	studentized Breusch-Pagan test
+
+data:  uncond
+BP = 2.4713, df = 1, p-value = 0.1159
+
+
+RESET test for functional form:
+
+	RESET test
+
+data:  uncond
+RESET = 3.4819, df1 = 2, df2 = 149, p-value = 0.03327
+
+
+Cook's distance (threshold 4/n = 0.0261), 5 most influential:
+                  country cooks_d
+ Central African Republic  0.1534
+                 Zimbabwe  0.0792
+               Madagascar  0.0628
+                   Greece  0.0552
+                  Burundi  0.0414
+beta excluding 8 influential observations: -0.8383 (full sample: -0.7892)
+
+==============================================================================
+PERIOD: Stability (2013-2018)  (T = 5 years)
+==============================================================================
+
+-- Unconditional: growth ~ log(y0) -------------------------------
+
+Call:
+lm(formula = growth ~ log_y0, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15.2836  -1.1275   0.0414   1.7970   7.4462 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   3.5454     1.3096   2.707  0.00757 **
+log_y0       -0.2131     0.1514  -1.408  0.16127   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.684 on 151 degrees of freedom
+Multiple R-squared:  0.01295,	Adjusted R-squared:  0.006417 
+F-statistic: 1.982 on 1 and 151 DF,  p-value: 0.1613
+
+
+HC1 robust standard errors:
+
+t test of coefficients:
+
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  3.54535    1.08178  3.2773  0.00130 **
+log_y0      -0.21307    0.12449 -1.7116  0.08902 . 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+beta = -0.2131 (HC1 se = 0.1245) | lambda = 0.21%/yr | half-life = 324 yrs
+
+-- Conditional: growth ~ log(y0) + developed ---------------------
+
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  6.71225    1.92390  3.4889 0.0006369 ***
+log_y0      -0.64798    0.25936 -2.4984 0.0135555 *  
+developed    1.66437    0.81902  2.0321 0.0439032 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+Variance inflation factors:
+   log_y0 developed 
+ 2.760917  2.760917 
+
+-- Convergence clubs: growth ~ log(y0) * developed ---------------
+
+t test of coefficients:
+
+                 Estimate Std. Error t value Pr(>|t|)   
+(Intercept)       5.80281    2.20841  2.6276 0.009499 **
+log_y0           -0.53040    0.29767 -1.7818 0.076815 . 
+developed         8.39797    4.98285  1.6854 0.094010 . 
+log_y0:developed -0.68994    0.53539 -1.2887 0.199514   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+-- Diagnostics ---------------------------------------------------
+
+	studentized Breusch-Pagan test
+
+data:  uncond
+BP = 0.00127, df = 1, p-value = 0.9716
+
+
+RESET test for functional form:
+
+	RESET test
+
+data:  uncond
+RESET = 0.014252, df1 = 2, df2 = 149, p-value = 0.9859
+
+
+Cook's distance (threshold 4/n = 0.0261), 5 most influential:
+           country cooks_d
+     Venezuela, RB  0.1078
+           Ireland  0.0909
+ Equatorial Guinea  0.0757
+             Qatar  0.0516
+            Kuwait  0.0332
+beta excluding 6 influential observations: -0.1345 (full sample: -0.2131)
+
+==============================================================================
+PERIOD: Recent (2018-2024)  (T = 6 years)
+==============================================================================
+
+-- Unconditional: growth ~ log(y0) -------------------------------
+
+Call:
+lm(formula = growth ~ log_y0, data = df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.7272  -1.0467   0.1748   1.4848   4.7358 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)  0.08976    1.24442   0.072    0.943
+log_y0       0.09466    0.14245   0.664    0.507
+
+Residual standard error: 2.51 on 151 degrees of freedom
+Multiple R-squared:  0.002916,	Adjusted R-squared:  -0.003688 
+F-statistic: 0.4415 on 1 and 151 DF,  p-value: 0.5074
+
+
+HC1 robust standard errors:
+
+t test of coefficients:
+
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept) 0.089758   1.178898  0.0761   0.9394
+log_y0      0.094657   0.123542  0.7662   0.4448
+
+
+beta = 0.0947 (HC1 se = 0.1235) | lambda = n.a. (divergence) | half-life = n.a.
+
+-- Conditional: growth ~ log(y0) + developed ---------------------
+
+t test of coefficients:
+
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept)  1.07628    1.95900  0.5494   0.5835
+log_y0      -0.03891    0.24720 -0.1574   0.8751
+developed    0.50389    0.69725  0.7227   0.4710
+
+
+Variance inflation factors:
+   log_y0 developed 
+ 2.841686  2.841686 
+
+-- Convergence clubs: growth ~ log(y0) * developed ---------------
+
+t test of coefficients:
+
+                  Estimate Std. Error t value Pr(>|t|)  
+(Intercept)      -0.047803   2.265450 -0.0211  0.98319  
+log_y0            0.104838   0.286887  0.3654  0.71531  
+developed         9.318162   3.883125  2.3997  0.01765 *
+log_y0:developed -0.892927   0.420417 -2.1239  0.03533 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+-- Diagnostics ---------------------------------------------------
+
+	studentized Breusch-Pagan test
+
+data:  uncond
+BP = 3.928, df = 1, p-value = 0.04749
+
+
+RESET test for functional form:
+
+	RESET test
+
+data:  uncond
+RESET = 0.23428, df1 = 2, df2 = 149, p-value = 0.7914
+
+
+Cook's distance (threshold 4/n = 0.0261), 5 most influential:
+            country cooks_d
+              Sudan  0.1876
+        Afghanistan  0.1017
+      Venezuela, RB  0.0501
+            Lebanon  0.0395
+ West Bank and Gaza  0.0354
+beta excluding 5 influential observations: -0.0546 (full sample: 0.0947)
+
+==============================================================================
+PERIOD: Full sample (2004-2024)  (T = 20 years)
+==============================================================================
+
+-- Unconditional: growth ~ log(y0) -------------------------------
+
+Call:
+lm(formula = growth ~ log_y0, data = df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.2573 -0.9554 -0.1068  1.3011  5.2048 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  4.81189    0.81507   5.904 2.26e-08 ***
+log_y0      -0.35389    0.09665  -3.661 0.000346 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.795 on 151 degrees of freedom
+Multiple R-squared:  0.08154,	Adjusted R-squared:  0.07546 
+F-statistic: 13.41 on 1 and 151 DF,  p-value: 0.0003463
+
+
+HC1 robust standard errors:
+
+t test of coefficients:
+
+             Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  4.811889   0.744040  6.4672 1.308e-09 ***
+log_y0      -0.353887   0.082735 -4.2774 3.342e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+beta = -0.3539 (HC1 se = 0.0827) | lambda = 0.37%/yr | half-life = 189 yrs
+
+-- Conditional: growth ~ log(y0) + developed ---------------------
+
+t test of coefficients:
+
+            Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)  6.31510    1.26239  5.0025 1.564e-06 ***
+log_y0      -0.56841    0.16926 -3.3582 0.0009947 ***
+developed    0.84753    0.52396  1.6176 0.1078595    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+Variance inflation factors:
+   log_y0 developed 
+ 2.914182  2.914182 
+
+-- Convergence clubs: growth ~ log(y0) * developed ---------------
+
+t test of coefficients:
+
+                 Estimate Std. Error t value  Pr(>|t|)    
+(Intercept)       4.82987    1.54110  3.1340  0.002077 ** 
+log_y0           -0.36906    0.20827 -1.7720  0.078440 .  
+developed         9.53927    2.34479  4.0683 7.652e-05 ***
+log_y0:developed -0.91677    0.27560 -3.3264  0.001108 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+-- Diagnostics ---------------------------------------------------
+
+	studentized Breusch-Pagan test
+
+data:  uncond
+BP = 3.2608, df = 1, p-value = 0.07096
+
+
+RESET test for functional form:
+
+	RESET test
+
+data:  uncond
+RESET = 1.5503, df1 = 2, df2 = 149, p-value = 0.2156
+
+
+Cook's distance (threshold 4/n = 0.0261), 5 most influential:
+                  country cooks_d
+                    Sudan  0.0629
+                 Ethiopia  0.0447
+            Venezuela, RB  0.0405
+                   Kuwait  0.0381
+ Central African Republic  0.0345
+beta excluding 8 influential observations: -0.3596 (full sample: -0.3539)
+
+==============================================================================
+SUMMARY: unconditional and conditional beta by period
+==============================================================================
+                   period horizon   n beta_uncond se_hc1  p_value r_squared
+   Pre-Crisis (2004-2008)       4 153     -0.3341 0.1481 2.56e-02   0.02404
+ Recuperation (2008-2013)       5 153     -0.7892 0.1384 6.05e-08   0.19490
+    Stability (2013-2018)       5 153     -0.2131 0.1245 8.90e-02   0.01295
+       Recent (2018-2024)       6 153      0.0947 0.1235 4.45e-01   0.00292
+  Full sample (2004-2024)      20 153     -0.3539 0.0827 3.34e-05   0.08154
+ lambda_pct half_life beta_cond lambda_cond_pct beta_trimmed bp_p_value
+      0.336     206.1   -0.2608           0.262      -0.3352     0.2196
+      0.805      86.1   -0.5766           0.585      -0.8383     0.1159
+      0.214     323.6   -0.6480           0.659      -0.1345     0.9716
+         NA        NA   -0.0389           0.039      -0.0546     0.0475
+      0.367     188.9   -0.5684           0.603      -0.3596     0.0710
+ club_interaction_p
+           1.31e-12
+           7.77e-01
+           2.00e-01
+           3.53e-02
+           1.11e-03
+
+Wrote C:/Users/Usuario/Downloads/Data Science/Mis proyectos/beta-convergence-analysis/results/tables/regression_summary.csv 
+Wrote C:/Users/Usuario/Downloads/Data Science/Mis proyectos/beta-convergence-analysis/results/logs/regressions_output.txt 
