@@ -1,8 +1,5 @@
-# One requirement per line: `pip install -r requirements.txt` treats a
-# space-separated line as a single (invalid) requirement.
 pandas>=2.0
 numpy>=1.26
 matplotlib>=3.8
 seaborn>=0.13
 statsmodels>=0.14
-jupyter>=1.0

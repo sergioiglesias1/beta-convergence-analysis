@@ -1,6 +1,3 @@
-# Packages required by regressions.R: HC1 covariances (sandwich), coeftest and
-# the BP / RESET tests (lmtest), variance inflation factors (car).
-
 required <- c("sandwich", "lmtest", "car")
 missing <- setdiff(required, rownames(installed.packages()))
 

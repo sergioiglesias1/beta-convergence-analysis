@@ -1,5 +1,3 @@
-# Build the analysis cross-section from the raw World Bank files.
-
 import numpy as np
 import pandas as pd
 
@@ -8,7 +6,6 @@ from paths import CLEAN_DATA, PROCESSED_DIR, RAW_DIR, SIGMA_DATA
 MIN_POPULATION = 1_000_000
 POPULATION_YEAR = 2024
 
-# Aggregates and unclassified economies carry the literal code "NA".
 INCOME_GROUP_CODES = ("HIC", "UMC", "LMC", "LIC")
 
 # key, label, base year, end year
@@ -20,7 +17,6 @@ PERIODS = [
     ("full", "Full sample (2004-2024)", 2004, 2024),
 ]
 
-
 def load_raw():
     missing = [name for name in ("gdp_pc_level", "population", "country_metadata")
                if not (RAW_DIR / f"{name}.csv").exists()]
@@ -30,7 +26,7 @@ def load_raw():
         )
     levels = pd.read_csv(RAW_DIR / "gdp_pc_level.csv")
     population = pd.read_csv(RAW_DIR / "population.csv")
-    # keep_default_na=False, or the "NA" aggregate code is read as missing.
+    # keep_default_na=False or the "NA" is read as missing
     metadata = pd.read_csv(RAW_DIR / "country_metadata.csv", keep_default_na=False)
     return levels, population, metadata
 
@@ -67,8 +63,7 @@ def build_dataset():
         horizon = end - base
         y0, yt = data[f"gdp_pc_{base}"], data[f"gdp_pc_{end}"]
         data[f"log_y0_{key}"] = np.log(y0)
-        # Log-annualised growth in % per year, not the mean of annual rates:
-        # averaging annual rates overstates growth for volatile series.
+        # Log-annualised growth in % per year, not the mean of annual rates
         data[f"growth_{key}"] = 100.0 * np.log(yt / y0) / horizon
 
     data["developed"] = (data["group"] == "Developed").astype(int)
@@ -78,7 +73,7 @@ def build_dataset():
          "developed", "population"]
         + [f"log_y0_{key}" for key, *_ in PERIODS]
         + [f"growth_{key}" for key, *_ in PERIODS]
-        + [f"gdp_pc_{year}" for year in range(2004, 2025)
+        + [f"gdp_pc_{year}" for year in range(2004, 2024+1)
            if f"gdp_pc_{year}" in data.columns]
     )
     data = data[columns].sort_values("country_name").reset_index(drop=True)
@@ -86,10 +81,9 @@ def build_dataset():
     return data
 
 
-def sigma_convergence(data, years=range(2004, 2025)):
-    # Dispersion of log income: beta-convergence is necessary but not
-    # sufficient for the distribution to actually narrow.
+def sigma_convergence(data, years=range(2004, 2024+1)):
     rows = []
+
     for year in years:
         column = f"gdp_pc_{year}"
         if column not in data.columns:

@@ -1,10 +1,3 @@
-# Beta-convergence regressions (Barro & Sala-i-Martin 1992):
-#   (1/T) * log(y_iT / y_i0) = alpha + beta * log(y_i0) + u_i
-# beta < 0 is convergence. The regressor is the income LEVEL of the base year;
-# regressing growth on past growth measures persistence, not convergence.
-#
-# Run `Rscript R/regressions.R` from the repository root, after src/etl.py.
-
 library(sandwich)
 library(lmtest)
 library(car)
@@ -19,6 +12,7 @@ logs_dir <- file.path(root, "results", "logs")
 if (!file.exists(data_path)) {
   stop(paste0(data_path, " not found. Run src/fetch_data.py and src/etl.py first."))
 }
+
 dir.create(tables_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(logs_dir, recursive = TRUE, showWarnings = FALSE)
 
@@ -30,15 +24,16 @@ df <- read.csv(data_path, stringsAsFactors = FALSE)
 df$developed <- as.integer(df$group == "Developed")
 
 periods <- list(
-  list(key = "pre_crisis",   label = "Pre-Crisis (2004-2008)",   horizon = 4),
+  list(key = "pre_crisis", label = "Pre-Crisis (2004-2008)", horizon = 4),
   list(key = "recuperation", label = "Recuperation (2008-2013)", horizon = 5),
-  list(key = "stability",    label = "Stability (2013-2018)",    horizon = 5),
-  list(key = "recent",       label = "Recent (2018-2024)",       horizon = 6),
-  list(key = "full",         label = "Full sample (2004-2024)",  horizon = 20)
+  list(key = "stability", label = "Stability (2013-2018)", horizon = 5),
+  list(key = "recent", label = "Recent (2018-2024)", horizon = 6),
+  list(key = "full", label = "Full sample (2004-2024)", horizon = 20)
 )
 
-# lambda = -log(1 + beta*T)/T, with beta rescaled from % to a rate.
-# NA for beta >= 0, which is divergence.
+# lambda = -log(1 + beta*T)/T
+# NA for beta >= 0 (divergence)
+
 implied_speed <- function(beta_pct, horizon) {
   beta <- beta_pct / 100
   arg <- 1 + beta * horizon
@@ -52,7 +47,7 @@ implied_speed <- function(beta_pct, horizon) {
 robust <- function(model) coeftest(model, vcov. = vcovHC(model, type = "HC1"))
 
 section <- function(title) {
-  cat("\n", strrep("=", 78), "\n", title, "\n", strrep("=", 78), "\n", sep = "")
+  cat("\n", title, "\n", sep = "")
 }
 
 rows <- list()
@@ -64,14 +59,17 @@ for (p in periods) {
   section(paste0("PERIOD: ", p$label, "  (T = ", p$horizon, " years)"))
 
   uncond <- lm(growth ~ log_y0, data = df)
-  cat("\n-- Unconditional: growth ~ log(y0) -------------------------------\n")
+
+  cat("\nUnconditional: growth ~ log(y0)\n")
   print(summary(uncond))
+  
   cat("\nHC1 robust standard errors:\n")
   print(robust(uncond))
 
   beta <- coef(uncond)[["log_y0"]]
   speed <- implied_speed(beta, p$horizon)
   robust_se <- sqrt(diag(vcovHC(uncond, type = "HC1")))[["log_y0"]]
+  
   cat(sprintf(
     "\nbeta = %.4f (HC1 se = %.4f) | lambda = %s | half-life = %s\n",
     beta, robust_se,
@@ -81,10 +79,13 @@ for (p in periods) {
            sprintf("%.0f yrs", speed[["half_life"]]))
   ))
 
-  # Conditional: the dummy proxies the steady state each group converges to.
-  cond <- lm(growth ~ log_y0 + developed, data = df)
-  cat("\n-- Conditional: growth ~ log(y0) + developed ---------------------\n")
+  cond <- lm(
+    growth ~ log_y0 + developed, data = df
+  )
+  
+  cat("\nConditional: growth ~ log(y0) + developed\n")
   print(robust(cond))
+  
   cat("\nVariance inflation factors:\n")
   print(vif(cond))
 
@@ -92,13 +93,16 @@ for (p in periods) {
   speed_cond <- implied_speed(beta_cond, p$horizon)
 
   # A significant interaction means separate convergence clubs.
-  clubs <- lm(growth ~ log_y0 * developed, data = df)
-  cat("\n-- Convergence clubs: growth ~ log(y0) * developed ---------------\n")
+  clubs <- lm(
+    growth ~ log_y0 * developed, data = df
+  )
+  
+  cat("\nConvergence clubs: growth ~ log(y0) * developed\n")
   print(robust(clubs))
   interaction_p <- coeftest(clubs, vcov. = vcovHC(clubs, type = "HC1"))[
     "log_y0:developed", "Pr(>|t|)"]
 
-  cat("\n-- Diagnostics ---------------------------------------------------\n")
+  cat("\nDiagnostics\n")
   bp <- bptest(uncond)
   print(bp)
   cat("\nRESET test for functional form:\n")
@@ -107,14 +111,17 @@ for (p in periods) {
   cooks <- cooks.distance(uncond)
   threshold <- 4 / nobs(uncond)
   top <- head(sort(cooks, decreasing = TRUE), 5)
+
   cat(sprintf("\nCook's distance (threshold 4/n = %.4f), 5 most influential:\n",
               threshold))
+  
   print(data.frame(country = df$country_name[as.integer(names(top))],
                    cooks_d = round(as.numeric(top), 4)),
         row.names = FALSE)
 
   keep <- cooks <= threshold
   beta_trimmed <- coef(lm(growth ~ log_y0, data = df[keep, ]))[["log_y0"]]
+  
   cat(sprintf(
     "beta excluding %d influential observations: %.4f (full sample: %.4f)\n",
     sum(!keep), beta_trimmed, beta
@@ -147,6 +154,8 @@ print(format(summary_table, digits = 3), row.names = FALSE)
 
 out_path <- file.path(tables_dir, "regression_summary.csv")
 write.csv(summary_table, out_path, row.names = FALSE)
+
 cat("\nWrote", out_path, "\n")
 cat("Wrote", log_path, "\n")
+
 sink()
