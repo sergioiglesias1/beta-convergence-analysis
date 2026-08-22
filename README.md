@@ -22,8 +22,8 @@ at the start of that period:
 
 $$\frac{1}{T}\ln\left(\frac{y_{iT}}{y_{i0}}\right) = \alpha + \beta \ln(y_{i0}) + u_i$$
 
-- **β < 0** tends to convergence: economies that started poorer grew faster.
-- **β > 0** tends to divergence: economies that started richer grew faster.
+- **β < 0** indicates convergence: economies that started poorer grew faster.
+- **β > 0** indicates divergence: economies that started richer grew faster.
 
 The regressor is the **income level** in the base year. Regressing growth in
 one period on growth in an earlier period is a different exercise, it measures
@@ -38,6 +38,11 @@ $$\beta = -\frac{1 - e^{-\lambda T}}{T} \quad\Longrightarrow\quad \lambda = -\fr
 where λ is the annual speed of convergence and $t_{1/2}$ the half-life of a
 deviation from steady state. The canonical benchmark in the literature is
 λ ≈ 2% per year.
+
+**Units.** Growth rates enter the regression in percentage points, so β is on
+the same scale. When computing λ and $t_{1/2}$, β is rescaled by 1/100:
+β = −0.354 over T = 20 gives λ = −ln(1 + (−0.00354)(20))/20 = 0.37%/yr.
+Plugging β in unscaled returns the logarithm of a negative number.
 
 Three models per period:
 
@@ -102,15 +107,15 @@ Unconditional β with HC1 standard errors, n = 153:
 | Recent (2018-2024) | 6 | +0.095 | 0.124 | 0.445 | 0.003 | n/a | n/a |
 | **Full sample (2004-2024)** | 20 | **-0.354** | 0.083 | <0.001 | 0.082 | 0.37%/yr | 189 yrs |
 
-Conditional β (controlling for development status) and the club interaction:
+Conditional β and the club interaction:
 
-| Period | β conditional | λ conditional | Club interaction p |
-|---|---|---|---|
-| Pre-Crisis | -0.261 | 0.26%/yr | <0.001 |
-| Recuperation | -0.577 | 0.59%/yr | 0.778 |
-| Stability | -0.648 | 0.66%/yr | 0.200 |
-| Recent | -0.039 | 0.04%/yr | 0.035 |
-| Full sample | -0.568 | 0.60%/yr | 0.001 |
+| Period | β conditional | HC1 s.e. | p | λ conditional | Club interaction p |
+|---|---|---|---|---|---|
+| Pre-Crisis | -0.261 | 0.268 | 0.333 | 0.26%/yr | <0.001 |
+| Recuperation | -0.577 | 0.262 | 0.029 | 0.59%/yr | 0.777 |
+| Stability | -0.648 | 0.259 | 0.014 | 0.66%/yr | 0.200 |
+| Recent | -0.039 | 0.247 | 0.875 | 0.04%/yr | 0.035 |
+| **Full sample** | **-0.568** | 0.169 | <0.001 | 0.60%/yr | 0.001 |
 
 σ-convergence, standard deviation of log GDP per capita:
 
@@ -153,8 +158,10 @@ Everything below is reported in `results/regressions_output.txt`.
   over the full sample (p = 0.071), so robust errors are a precaution here
   rather than a rescue, reported either way, since growth variance plainly
   differs across income groups.
-- **RESET test** for functional form on every unconditional regression.
-- **Influence.** With n = 153, Cook's distance above 4/n is reported and each
+- **RESET test** for functional form. It rejects linearity in 2004-2008
+  (p < 0.001) and 2008-2013 (p = 0.033), the club models address exactly that
+  non-linearity. No rejection in the other three periods.
+  - **Influence.** With n = 153, Cook's distance above 4/n is reported and each
   regression is refit without those observations. Over the full sample β moves
   from -0.354 to -0.360 when the 8 most influential economies are excluded, so
   the headline result does not rest on outliers.
@@ -164,36 +171,30 @@ Everything below is reported in `results/regressions_output.txt`.
 
 ```bash
 pip install -r requirements.txt
-Rscript install_r_packages.R
+Rscript R/install_r_packages.R
 
-python fetch_data.py     # download raw indicators from the World Bank API
-python etl.py            # build data/clean_data.csv and data/sigma_convergence.csv
-python main.py           # write figures to visualizations/python_outputs/
-Rscript regressions.R    # estimate, test, write results/
+python src/fetch_data.py    # download raw indicators from the World Bank API
+python src/etl.py           # build data/processed/
+python src/main.py          # write figures to results/figures/
+Rscript R/regressions.R     # estimate, test, write results/tables/ and results/logs/
 ```
-
-<sub>$\color{gray}{\textsf{Every step runs from the API, no manual download from the DataBank web interface is involved.}}$</sub>
 
 ## Project structure
 
 ```
 .
 ├── data/
-│   ├── raw/                      # downloaded indicators
-│   ├── clean_data.csv            # analysis cross-section
-│   └── sigma_convergence.csv     # dispersion by year
+│   ├── raw/                          # downloaded indicators
+│   └── processed/                    # analysis cross-section, sigma series
+├── notebooks/                        # exploratory work
+├── R/
+│   ├── install_r_packages.R
+│   └── regressions.R                 # estimation, HC1, diagnostics
 ├── results/
-│   ├── regression_summary.csv    # one row per period
-│   └── regressions_output.txt    # full regression log
-├── visualizations/
-│   └── python_outputs/           # figures
-├── ETL.ipynb                     # exploratory notebook
-├── fetch_data.py                 # World Bank API download
-├── etl.py                        # sample and variables
-├── plots.py                      # figure functions
-├── main.py                       # rebuild all figures
-├── regressions.R                 # estimation and tests
-├── install_r_packages.R
+│   ├── figures/                      # beta_*.png, sigma_convergence.png
+│   ├── logs/regressions_output.txt   # full regression log
+│   └── tables/regression_summary.csv # one row per period
+├── src/                              # fetch, ETL, plots, figure driver
 ├── requirements.txt
 └── LICENSE
 ```
