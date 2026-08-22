@@ -22,8 +22,8 @@ at the start of that period:
 
 $$\frac{1}{T}\ln\left(\frac{y_{iT}}{y_{i0}}\right) = \alpha + \beta \ln(y_{i0}) + u_i$$
 
-- **β < 0** → convergence: economies that started poorer grew faster.
-- **β > 0** → divergence.
+- **β < 0** tends to convergence: economies that started poorer grew faster.
+- **β > 0** tends to divergence: economies that started richer grew faster.
 
 The regressor is the **income level** in the base year. Regressing growth in
 one period on growth in an earlier period is a different exercise, it measures
